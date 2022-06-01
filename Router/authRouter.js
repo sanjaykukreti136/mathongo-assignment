@@ -1,6 +1,8 @@
 // dependecies
 const express = require("express");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+
 // deployed
 // require -> local file
 const JWT_SECRET = require("../secrets").JWT_SECRET;
@@ -37,7 +39,9 @@ async function loginUser(req, res) {
     let user = await userModel.findOne({ email });
     if (user) {
       // password
-      if (user.password == password) {
+      let areEqual = await bcrypt.compare(req.body.password, user.password);
+
+      if (areEqual) {
         console.log(JWT_SECRET);
         let token = jwt.sign({ id: user["_id"] }, JWT_SECRET);
 
@@ -98,13 +102,15 @@ async function forgetPassword(req, res) {
 async function resetPassword(req, res) {
   try {
     let { token, confirmPassword, password } = req.body;
+
     let user = await userModel.findOne({ token });
+    console.log(user);
     if (user) {
       user.resetHandler(password, confirmPassword);
       await user.save();
       let newUser = await userModel.findOne({ email: user.email });
       res.status(200).json({
-        message: "user token send to your email",
+        message: "password updated",
         user: newUser,
       });
     } else {

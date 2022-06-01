@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 let database_link;
+const bcrypt = require("bcrypt");
+
 if (process.env.link) {
   database_link = process.env.link;
 } else {
@@ -51,13 +53,16 @@ const userSchema = new mongoose.Schema({
   validUpto: Date,
   role: {
     type: String,
-    enum: ["admin", "ce", "user"],
+    enum: ["admin", "user"],
     default: "user",
   },
 });
 // hook
-userSchema.pre("save", function (next) {
+userSchema.pre("save", async function (next) {
   // do stuff
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+
   this.confirmPassword = undefined;
   next();
 });

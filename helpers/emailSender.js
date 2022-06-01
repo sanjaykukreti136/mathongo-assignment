@@ -6,7 +6,7 @@ module.exports = async function main(token, userEmail) {
     host: "smtp.gmail.com",
     secure: true,
     auth: {
-      user: "kukretis992@gmail.com",
+      user: "recruitsanjay2771@gmail.com",
       pass: APP_PASSWORD,
     },
   });
