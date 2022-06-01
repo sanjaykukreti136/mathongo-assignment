@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use("/auth", authRouter);
-app.listen(8081, function () {
+app.listen(process.env.PORT || 8081, function () {
   console.log("server started");
 });
 app.use(function (req, res) {

@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 
 // deployed
 // require -> local file
-const JWT_SECRET = require("../secrets").JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET || require("../secrets").JWT_SECRET;
 const userModel = require("../model/userModel");
 const { bodyChecker } = require("./utilFns");
 const emailSender = require("../helpers/emailSender");

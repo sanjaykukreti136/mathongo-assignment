@@ -1,5 +1,6 @@
 const nodemailer = require("nodemailer");
-const APP_PASSWORD = require("../secrets").APP_PASSWORD;
+const APP_PASSWORD =
+  process.env.APP_PASSWORD || require("../secrets").APP_PASSWORD;
 module.exports = async function main(token, userEmail) {
   let transporter = nodemailer.createTransport({
     service: "gmail",
